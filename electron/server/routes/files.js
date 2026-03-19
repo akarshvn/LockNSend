@@ -69,6 +69,7 @@ router.get('/:id', requireAuth, (req, res) => {
       mimeType: file.mime_type,
       fileSize: file.file_size,
       uploadedAt: file.uploaded_at,
+      ownerUsername: file.owner_username,
       nonce: Buffer.from(file.nonce).toString('base64'),
       authTag: Buffer.from(file.auth_tag).toString('base64'),
       ciphertextHash: file.ciphertext_hash,

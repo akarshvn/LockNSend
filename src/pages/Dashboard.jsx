@@ -7,7 +7,6 @@ import ProgressBar from '../components/ProgressBar'
 import useAuthStore from '../store/authStore'
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState('owned') // 'owned' | 'shared'
   const [files, setFiles] = useState([])
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState(null)
@@ -24,7 +23,7 @@ export default function Dashboard() {
   const fetchFiles = async () => {
     setLoading(true)
     try {
-      const data = await api.get(`/api/files?view=${activeTab}`)
+      const data = await api.get('/api/files?view=owned')
       setFiles(data)
     } catch (err) {
       toast.error('Failed to load files')
@@ -35,7 +34,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchFiles()
-  }, [activeTab])
+  }, [])
 
   const handleDelete = async (fileId) => {
     setDeletingId(fileId)
@@ -118,29 +117,8 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', borderBottom: '1px solid var(--border)' }}>
-        <button
-          className="btn btn-ghost"
-          style={{ 
-            border: 'none', borderRadius: 0, paddingBottom: '12px',
-            color: activeTab === 'owned' ? 'var(--text)' : 'var(--muted)',
-            borderBottom: activeTab === 'owned' ? '2px solid var(--accent)' : '2px solid transparent'
-          }}
-          onClick={() => setActiveTab('owned')}
-        >
-          My Files
-        </button>
-        <button
-          className="btn btn-ghost"
-          style={{ 
-            border: 'none', borderRadius: 0, paddingBottom: '12px',
-            color: activeTab === 'shared' ? 'var(--text)' : 'var(--muted)',
-            borderBottom: activeTab === 'shared' ? '2px solid var(--accent)' : '2px solid transparent'
-          }}
-          onClick={() => setActiveTab('shared')}
-        >
-          Shared With Me
-        </button>
+      <div style={{ paddingBottom: '12px', marginBottom: '24px', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ color: 'var(--text)', fontSize: '14px', fontWeight: '500' }}>My Uploads</div>
       </div>
 
       {dlProgress && (

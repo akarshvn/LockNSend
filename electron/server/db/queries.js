@@ -150,7 +150,12 @@ function insertFile({ ownerId, filename, mimeType, fileSize, ciphertextPath, non
 }
 
 function getFile(fileId) {
-  return getDb().prepare('SELECT * FROM files WHERE file_id = ?').get(fileId);
+  return getDb().prepare(`
+    SELECT f.*, u.username as owner_username
+    FROM files f
+    JOIN users u ON f.owner_id = u.user_id
+    WHERE f.file_id = ?
+  `).get(fileId);
 }
 
 function listFilesForUser(userId) {

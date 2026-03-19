@@ -74,8 +74,11 @@ export default function Login() {
   }
 
   return (
-    <div className="app-layout" style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card fade-in" style={{ width: '380px', padding: '32px' }}>
+    <div className="app-layout" style={{ alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+      {/* Invisible drag handle at the top */}
+      <div className="titlebar-drag" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', zIndex: 100 }} />
+
+      <div className="card fade-in" style={{ width: '380px', padding: '32px', position: 'relative', zIndex: 1 }}>
         
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>

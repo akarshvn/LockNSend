@@ -9,6 +9,7 @@ import useAuthStore from './store/authStore'
 // Pages
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import SharedFiles from './pages/SharedFiles'
 import Upload from './pages/Upload'
 import FileDetail from './pages/FileDetail'
 
@@ -94,7 +95,7 @@ export default function App() {
           } />
           
           <Route path="/shared" element={
-            <AuthenticatedRoute><Dashboard view="shared" /></AuthenticatedRoute>
+            <AuthenticatedRoute><SharedFiles /></AuthenticatedRoute>
           } />
 
           <Route path="/upload" element={

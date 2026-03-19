@@ -53,11 +53,7 @@ const linkStyle = (isActive) => ({
 export default function Sidebar() {
   return (
     <div className="app-sidebar">
-      <div style={{ padding: '0 8px 12px', marginBottom: '8px', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ padding: '4px 16px', fontSize: '10px', fontWeight: '600', color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-          Files
-        </div>
-      </div>
+      <div style={{ padding: '24px 0 12px' }}>{/* Spacer for macOS traffic lights */}</div>
 
       <nav style={{ flex: 1 }}>
         {navItems.map(item => (
