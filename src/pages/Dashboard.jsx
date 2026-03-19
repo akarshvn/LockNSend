@@ -137,13 +137,11 @@ export default function Dashboard() {
           </svg>
           <div style={{ fontSize: '16px', color: 'var(--text)', fontWeight: '500', marginBottom: '8px' }}>No files found</div>
           <div style={{ fontSize: '13px', maxWidth: '300px' }}>
-            {activeTab === 'owned' ? "You haven't uploaded any files yet." : "No one has shared any files with you yet."}
+            You haven't uploaded any files yet.
           </div>
-          {activeTab === 'owned' && (
-            <Link to="/upload" className="btn btn-primary" style={{ marginTop: '24px', textDecoration: 'none' }}>
-              Upload your first file
-            </Link>
-          )}
+          <Link to="/upload" className="btn btn-primary" style={{ marginTop: '24px', textDecoration: 'none' }}>
+            Upload your first file
+          </Link>
         </div>
       ) : (
         <div className="slide-up">
