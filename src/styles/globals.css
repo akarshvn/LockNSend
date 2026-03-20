@@ -3,20 +3,50 @@
 @tailwind utilities;
 
 /* ── Design Tokens ─────────────────────────────────────────── */
-:root {
-  --bg:         #0d0d0f;
-  --surface:    #16161a;
-  --surface-2:  #1e1e24;
+:root, [data-theme="amoled"] {
+  --bg:         #050505;
+  --surface:    #0d0d0f;
+  --surface-2:  #16161a;
   --accent:     #4ade80;
   --accent-dim: #22c55e;
   --danger:     #f87171;
   --muted:      #6b7280;
-  --text:       #f0f0f0;
+  --text:       #ffffff;
   --text-2:     #a1a1aa;
   --border:     rgba(255,255,255,0.07);
   --border-2:   rgba(255,255,255,0.12);
-  --shadow:     0 4px 24px rgba(0,0,0,0.4);
+  --shadow:     0 8px 32px rgba(0,0,0,0.6);
   --radius:     12px;
+}
+
+[data-theme="gray"] {
+  --bg:         #1a1a1e;
+  --surface:    #24242a;
+  --surface-2:  #2d2d35;
+  --accent:     #4ade80;
+  --accent-dim: #22c55e;
+  --danger:     #f87171;
+  --muted:      #9ca3af;
+  --text:       #f3f4f6;
+  --text-2:     #94a3b8;
+  --border:     rgba(255,255,255,0.06);
+  --border-2:   rgba(255,255,255,0.1);
+  --shadow:     0 8px 32px rgba(0,0,0,0.4);
+}
+
+[data-theme="light"] {
+  --bg:         #f9fafb;
+  --surface:    #ffffff;
+  --surface-2:  #f3f4f6;
+  --accent:     #22c55e;
+  --accent-dim: #16a34a;
+  --danger:     #dc2626;
+  --muted:      #64748b;
+  --text:       #0f172a;
+  --text-2:     #475569;
+  --border:     rgba(0,0,0,0.06);
+  --border-2:   rgba(0,0,0,0.1);
+  --shadow:     0 8px 32px rgba(0,0,0,0.06);
 }
 
 /* ── Base ──────────────────────────────────────────────────── */
@@ -42,11 +72,11 @@ body {
 /* ── Scrollbar ─────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
 /* ── Selection ─────────────────────────────────────────────── */
-::selection { background: rgba(74,222,128,0.2); color: var(--text); }
+::selection { background: var(--accent); color: #000; }
 
 /* ── Typography ────────────────────────────────────────────── */
 h1,h2,h3,h4,h5,h6 { font-weight: 600; line-height: 1.3; }
@@ -57,10 +87,11 @@ h1,h2,h3,h4,h5,h6 { font-weight: 600; line-height: 1.3; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .card-hover {
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 .card-hover:hover {
   border-color: var(--border-2);
@@ -69,7 +100,8 @@ h1,h2,h3,h4,h5,h6 { font-weight: 600; line-height: 1.3; }
 
 /* ── Glassmorphism Card ────────────────────────────────────── */
 .glass {
-  background: rgba(22,22,26,0.8);
+  background: var(--surface);
+  opacity: 0.95;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);

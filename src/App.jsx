@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar'
 import Toast from './components/Toast'
 import { useToast } from './hooks/useToast'
 import useAuthStore from './store/authStore'
+import useThemeStore from './store/themeStore'
 
 // Pages
 import Login from './pages/Login'
@@ -49,9 +50,11 @@ function AuthenticatedRoute({ children }) {
 
 export default function App() {
   const { setServerPort } = useAuthStore()
+  const { initTheme } = useThemeStore()
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
+    initTheme()
     if (window.electronAPI) {
       // 1. Listen for the Express server port from Electro main
       window.electronAPI.onServerPort((port) => {
