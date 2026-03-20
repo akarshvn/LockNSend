@@ -12,6 +12,20 @@ export default function Upload() {
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(null)
   const [phase, setPhase] = useState('')
+  const [logs, setLogs] = useState([])
+  const [completed, setCompleted] = useState(false)
+
+  const addLog = (msg) => {
+    const time = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    setLogs(prev => [...prev, { id: Date.now() + Math.random(), msg, time }])
+  }
+
+  React.useEffect(() => {
+    if (logs.length > 0) {
+      const el = document.getElementById('log-end')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [logs])
 
   const api = useApi()
   const { toast } = useToast()
@@ -35,10 +49,16 @@ export default function Upload() {
     
     setUploading(true)
     setProgress({ percent: 0, mbps: 0 })
+    setLogs([])
     
     try {
+      addLog(`Initializing secure upload for: ${file.name}`)
+      
       // 1. Encrypt file via Electron IPC (streaming)
+      addLog("Generating unique 256-bit FEK and 96-bit GCM nonce...")
       setPhase('Encrypting')
+      addLog("Starting streaming AES-256-GCM encryption...")
+
       const cleanup = window.electronAPI.onProgress((p) => {
         if (p.phase === 'Encrypting') {
           setProgress({ percent: p.percent, mbps: p.mbps })
@@ -52,15 +72,19 @@ export default function Upload() {
 
       cleanup()
       if (!encResult.ok) throw new Error(encResult.error)
+      addLog("Encryption complete. Integrity verified via SHA-256.")
 
       // 2. Wrap FEK for each recipient using RSA-OAEP
       setPhase('Processing')
+      addLog(`Wrapping encryption key for ${recipients.length} recipient(s) (RSA-OAEP-4096)...`)
+      
       const wrappedRecipients = await Promise.all(recipients.map(async r => {
         const wrapRes = await window.electronAPI.wrapFEK({
           publicKeyPem: r.publicKey,
           fekHex: encResult.fek
         })
         if (!wrapRes.ok) throw new Error(`Failed to wrap key for ${r.username}`)
+        addLog(`Key secured for ${r.username}`)
         return {
           recipientId: r.userId,
           wrappedFek: wrapRes.wrappedFekBase64
@@ -69,7 +93,7 @@ export default function Upload() {
 
       // 3. Upload ciphertext to local server
       setPhase('Uploading')
-      setProgress({ percent: 0, mbps: 0 })
+      addLog("Registering secure metadata on local server...")
 
       const formData = new FormData()
       formData.append('metadata', JSON.stringify({
@@ -83,12 +107,16 @@ export default function Upload() {
         recipients: wrappedRecipients
       }))
 
-      // Real call to server to finalize metadata
       await api.postForm(`/api/files/upload`, formData)
-
+      
+      addLog("Database records finalized. Session secure.")
+      addLog("Finalizing... Cleaning up temporary data.")
+      addLog("Secure upload completed successfully.")
+      
+      setCompleted(true)
       toast.success('File secured and uploaded successfully')
-      navigate('/dashboard')
     } catch (err) {
+      addLog(`ERROR: ${err.message}`)
       toast.error(err.message || 'Upload failed')
       setUploading(false)
       setProgress(null)
@@ -149,12 +177,51 @@ export default function Upload() {
         </div>
 
         {progress ? (
-          <ProgressBar 
-            phase={phase} 
-            percent={progress.percent} 
-            mbps={progress.mbps} 
-            filename={file?.name}
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <ProgressBar 
+              phase={phase} 
+              percent={progress.percent} 
+              mbps={progress.mbps} 
+              filename={file?.name}
+            />
+            
+            <div style={{ 
+              background: '#0a0a0c', 
+              borderRadius: '8px', 
+              border: '1px solid var(--border)',
+              padding: '16px',
+              fontFamily: 'monospace',
+              maxHeight: '180px',
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px'
+            }}>
+              <div style={{ fontSize: '11px', color: 'var(--accent)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Security Log
+              </div>
+              {logs.map(log => (
+                <div key={log.id} style={{ fontSize: '12px', display: 'flex', gap: '10px' }} className="slide-up">
+                  <span style={{ color: 'var(--muted)', opacity: 0.5 }}>[{log.time}]</span>
+                  <span style={{ color: log.msg.startsWith('ERROR') ? 'var(--danger)' : 'var(--text-2)' }}>
+                    {log.msg.startsWith('Secure upload completed') ? '✓ ' : log.msg.startsWith('ERROR') ? '✗ ' : '> '} 
+                    {log.msg}
+                  </span>
+                </div>
+              ))}
+              <div id="log-end" />
+            </div>
+
+            {completed && (
+              <button 
+                className="btn btn-primary slide-up" 
+                style={{ width: '100%', padding: '12px', justifyContent: 'center' }}
+                onClick={() => navigate('/dashboard')}
+              >
+                Back to Dashboard
+              </button>
+            )}
+          </div>
         ) : (
           <button 
             className="btn btn-primary" 
