@@ -68,7 +68,7 @@ export default function RecipientPicker({ selectedRecipients, onChange }) {
               background: 'rgba(74,222,128,0.1)',
               border: '1px solid rgba(74,222,128,0.2)',
               borderRadius: '6px',
-              fontSize: '13px', color: '#f0f0f0'
+              fontSize: '13px', color: 'var(--text)'
             }}>
               <span style={{ fontWeight: '500' }}>{r.username}</span>
               <button 
@@ -116,7 +116,7 @@ export default function RecipientPicker({ selectedRecipients, onChange }) {
           position: 'absolute', top: '100%', left: 0, right: 0,
           marginTop: '4px', background: 'var(--surface)',
           border: '1px solid var(--border)', borderRadius: '8px',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.5)', zIndex: 10,
+          boxShadow: 'var(--shadow)', zIndex: 10,
           maxHeight: '200px', overflowY: 'auto'
         }}>
           {results.length > 0 ? (
@@ -133,7 +133,7 @@ export default function RecipientPicker({ selectedRecipients, onChange }) {
               >
                 <div style={{
                   width: '24px', height: '24px', borderRadius: '50%',
-                  background: 'rgba(74,222,128,0.1)', color: '#4ade80',
+                  background: 'rgba(var(--accent-rgb, 74,222,128), 0.15)', color: 'var(--accent)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '11px', fontWeight: 'bold'
                 }}>{u.username[0].toUpperCase()}</div>

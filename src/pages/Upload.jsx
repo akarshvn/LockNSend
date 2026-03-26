@@ -132,44 +132,51 @@ export default function Upload() {
 
       <div className="card" style={{ padding: '24px' }}>
         {!file ? (
-          <div className="drop-zone" onClick={onFileSelect}>
-            <div style={{ marginBottom: '16px', color: 'var(--accent)' }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="17 8 12 3 7 8"></polyline>
-                <line x1="12" y1="3" x2="12" y2="15"></line>
-              </svg>
+          <div style={{ marginBottom: '48px' }}>
+            <div className="drop-zone" onClick={onFileSelect} style={{ padding: '32px 24px' }}>
+              <div style={{ marginBottom: '16px', color: 'var(--accent)' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <div style={{ fontWeight: '600', marginBottom: '4px' }}>Select File</div>
+              <div style={{ fontSize: '13px', color: 'var(--muted)' }}>No size limit for streaming encryption</div>
             </div>
-            <div style={{ fontWeight: '600', marginBottom: '4px' }}>Select File</div>
-            <div style={{ fontSize: '13px', color: 'var(--muted)' }}>No size limit for streaming encryption</div>
           </div>
         ) : (
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '40px' }}>
             <div className="label">Selected File</div>
             <div style={{ 
-              display: 'flex', alignItems: 'center', gap: '12px', 
-              padding: '12px', background: 'var(--surface-2)', 
-              borderRadius: '8px', border: '1px solid var(--border)' 
+              display: 'flex', alignItems: 'center', gap: '16px', 
+              padding: '16px', background: 'var(--surface-2)', 
+              borderRadius: '12px', border: '1px solid var(--border)' 
             }}>
-              <div style={{ color: 'var(--accent)' }}>
+              <div style={{ 
+                width: '40px', height: '40px', background: 'var(--bg)', 
+                borderRadius: '8px', display: 'flex', alignItems: 'center', 
+                justifyContent: 'center', color: 'var(--accent)' 
+              }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: '600', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</div>
-                <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                <div style={{ fontWeight: '600', fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</div>
+                <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '2px' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</div>
               </div>
               <button 
                 className="btn-icon" 
                 onClick={() => setFile(null)}
                 disabled={uploading}
+                style={{ padding: '8px' }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
             </div>
           </div>
         )}
 
-        <div style={{ marginBottom: '32px' }}>
+        <div style={{ marginBottom: '48px' }}>
           <RecipientPicker 
             selectedRecipients={recipients} 
             onChange={setRecipients} 
@@ -186,7 +193,7 @@ export default function Upload() {
             />
             
             <div style={{ 
-              background: '#0a0a0c', 
+              background: 'var(--surface-2)', 
               borderRadius: '8px', 
               border: '1px solid var(--border)',
               padding: '16px',

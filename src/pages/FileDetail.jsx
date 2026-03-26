@@ -209,9 +209,9 @@ export default function FileDetail() {
                   border: '1px solid var(--border)' 
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--bg-2)', color: 'var(--text-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '12px' }}>
-                      {r.username[0].toUpperCase()}
-                    </div>
+                     <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--surface)', color: 'var(--text-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '12px', border: '1px solid var(--border)' }}>
+                       {r.username[0].toUpperCase()}
+                     </div>
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: '500' }}>{r.username}</div>
                       <div style={{ fontSize: '11px', color: 'var(--muted)' }}>Granted {new Date(r.grantedAt).toLocaleDateString()}</div>
